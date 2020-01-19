@@ -72,11 +72,12 @@ In your IDE (preferrably VS Code) install the extensions for...
 - Setup an account for MailGun, get an API key and a sandbox api url to use
   - Also, add your email address to your sandbox's "Authorized Recipients" (https://app.mailgun.com/app/sending/domains). You'll need this for any integration tests to work.
 
-- Setup an account for SendGrid, get an API key to use
-- Create a .env file (which won't get committed to the repo) and paste these 3 values into it like so...
+- Setup an account for SendGrid, get an API url and key to use
+- Create a .env file (which won't get committed to the repo) and paste these 4 values into it like so...
 
     API_URL_MAILGUN='https://api.mailgun.net/v3/YourMailGunSandboxUrl.mailgun.org/messages'
     API_KEY_MAILGUN='YourMailGunApiKeyASDFGHJKLASDFGHJKL'
+    API_URL_SENDGRID='https://api.sendgrid.com/v3/mail/send'
     API_KEY_SENDGRID='YourSendGridApiKeyASDFGHJKLASDFGHJKL'
 
 
@@ -124,7 +125,7 @@ Some things we couldn't quite get working in this demo...
 Some things, for the future...
 
 - Support html field
-- An integration test that check the email arrived - logs into gmail and checks if the email was received 🤔 At the mercy of Mailgun/SendGrid's delivery time (how long would you wait?)
+- An integration test that check the email arrived - logs into gmail and checks if the email was received
 - Guarenteed delivery - DynamoDB to record requests
 - /email-status endpoint, where (providing a GUID) customers can check on the status of a particular email... while still in SQS queue 'pending', after giving up (after 50 times) 'failed'
 - deploy additional dev/test environments with CI pipeline
