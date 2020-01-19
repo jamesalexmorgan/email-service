@@ -1,0 +1,62 @@
+service: send-email-service-1
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: personal
+  region: ap-southeast-2
+  environment:
+    SQS_QUEUE_URL: https://sqs.${self:provider.region}.amazonaws.com/067644463950/EmailQueue
+    API_URL_MAILGUN: ${env:API_URL_MAILGUN}
+    API_KEY_MAILGUN: ${env:API_KEY_MAILGUN}
+    API_KEY_SENDGRID: ${env:API_KEY_SENDGRID}
+  iamRoleStatements:
+    # allow sending to EmailQueue
+    - Effect: 'Allow'
+      Action:
+        - 'sqs:SendMessage'
+      Resource:
+        Fn::GetAtt:
+          - EmailQueue
+          - Arn
+
+plugins:
+  - serverless-dotenv-plugin # enables us to use variables here from the .env file
+
+package:
+  individually: true
+  exclude:
+    - node_modules/**
+    - src/**
+    - coverage/**
+  include:
+    - dist/**
+
+functions:
+  customerRequest:
+    handler: dist/lambdas/customerRequest.handler
+    events:
+      - http:
+          path: v1/send-email
+          method: any
+  sendEmail:
+    handler: dist/lambdas/sendEmail.handler
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - EmailQueue
+              - Arn
+      - batchSize: 1 # default and max is 10
+
+resources:
+  Resources:
+    EmailQueue:
+      Type: 'AWS::SQS::Queue'
+      Properties:
+        QueueName: 'EmailQueue'
+        VisibilityTimeout: 30 # 30 sec.
+        MessageRetentionPeriod: 300 # 300 sec. 10 times until fail
+
+# export QUEUE_URL=`aws sqs get-queue-url --queue-name EmailQueue --query 'QueueUrl' --output text --profile=sls`
+# aws sqs send-message --queue-url ${QUEUE_URL} --message-body '{"text" : "Hello!"}' --profile=sls

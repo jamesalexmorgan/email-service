@@ -1,0 +1,57 @@
+{
+  "name": "express-typescript-starter",
+  "version": "0.1.0",
+  "description": "A starting point for Node.js express apps with TypeScript",
+  "alias": {
+    "src": "./src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Microsoft/TypeScript-Node-Starter"
+  },
+  "author": "Bowden Kelly",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run watch-ts",
+    "watch-ts": "tsc -w",
+    "build": "npm run clean-dist ; npm run build-lambdas",
+    "clean-dist": "rimraf dist/*",
+    "build-lambdas": "parcel build src/lambdas/*/index.ts --out-dir dist/lambdas/ --out-file index.js --no-content-hash --target node --bundle-node-modules",
+    "clean": "rimraf node_modules",
+    "test": "jest --forceExit --coverage --verbose",
+    "test-integration": "jest --testMatch=**/*.test.integration.ts --forceExit --verbose",
+    "test-watch": "jest --forceExit --verbose --watchAll",
+    "lint": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet --fix",
+    "reset": "npm run clean ; npm i",
+    "deploy": "npm run build && npm run deploy-all",
+    "deploy-all": "sls deploy --verbose",
+    "deploy-functions": "npm run build && npm run deploy-function-sendEmail && npm run deploy-function-customerRequest",
+    "deploy-function-sendEmail": "export AWS_CLIENT_TIMEOUT=100000000 && sls deploy --verbose function --function sendEmail --aws-profile personal",
+    "deploy-function-customerRequest": "export AWS_CLIENT_TIMEOUT=100000000 && sls deploy --verbose function --function customerRequest --aws-profile personal"
+  },
+  "dependencies": {
+    "@types/aws-lambda": "^8.10.39",
+    "aws-sdk": "^2.606.0",
+    "axios": "^0.19.1",
+    "serverless": "^1.61.2"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.5.5",
+    "@types/async": "^3.0.0",
+    "@types/jest": "^24.0.15",
+    "@types/node": "^8.10.36",
+    "@typescript-eslint/eslint-plugin": "^1.12.0",
+    "@typescript-eslint/parser": "^1.12.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^5.0.0",
+    "eslint-config-prettier": "^6.0.0",
+    "jest": "^24.8.0",
+    "jest-cucumber": "^2.0.11",
+    "parcel-bundler": "^1.12.3",
+    "rimraf": "^2.6.3",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.2"
+  }
+}

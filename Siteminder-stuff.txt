@@ -1,0 +1,24 @@
+https://dev.to/piczmar_0/error-handling-in-aws-lambda-trigger-by-sqs-events-3amp
+
+
+
+
+- Input Validation: how resilient the application is to wrong/misspelt input? What’s the feedback to the user? At the frontend, or backend or both?
+
+- Error Handling: what feedback the user is given in case of errors? How resilient is the application to IO errors, unresponsive or slow backends?
+
+- Technical choices: do choices of libraries, databases, architecture etc. seem appropriate for the chosen application?
+
+- Clarity: does the README clearly and concisely explains the problem and solution? Are technical trade offs explained? Are install/setup instructions provided?
+
+- Correctness: does the application do what was asked? If there is anything missing, does the README explain why it is missing?
+
+- Code quality: is the code simple, easy to understand, and maintainable? Are there any code smells or other red flags? Does object-oriented code follows principles such as the single responsibility principle? Is the coding style consistent with the language's guidelines? Is it consistent throughout the codebase?
+
+- Testing: Your code must be testable. If you run out of time and cannot add the necessary testing be prepared to answer questions so that we get a feel for your testing skills.
+DELIVERY
+Please post the following information in the response window below:
+
+- Please upload your solution on Github and include a README.md file with info on how to build and deploy.
+
+- Please deploy your solution somewhere (URL) for us to play with it.
