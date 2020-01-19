@@ -12,9 +12,8 @@ You can test the api point now by pasting this command below (replace your email
 
     curl --header "Content-Type: application/json" \
       --request POST \
-      --data '{"to":"youremailaddress@here.com","from":"John Smith<john@smith.com>","subject":"hello world","text":"details about hello world"}' \
+      --data '{"to":"John Smith<youremailaddresshere@gmail.com>","from":"Jim Jones<jim@jones.com>","subject":"Something awesome has happened","text":"You sent an email"}' \
       https://1apdfrxcte.execute-api.ap-southeast-2.amazonaws.com/dev/v1/send-email
-
 
 As you can see the url currently recieves POST requests with the Content-Type "application/json", with the following possible attributes sent in the JSON body...
 
