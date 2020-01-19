@@ -44,6 +44,7 @@ describe('checkInvalidInput', () => {
     const event = newTestEvent(
       '{ "to": "John Smith<john@smith.com>", ' +
         '"from": "Test User<john@smith.com>", ' +
+        '"text": "Hello world", ' +
         '"cc": "Jim Jones<bademailaddress.com>" }',
     );
     const result = await checkInvalidInput(event);
@@ -56,6 +57,7 @@ describe('checkInvalidInput', () => {
     const event = newTestEvent(
       '{ "to": "John Smith<john@smith.com>", ' +
         '"from": "Test User<john@smith.com>", ' +
+        '"text": "Hello world", ' +
         '"bcc": "bademailaddress.com" }',
     );
     const result = await checkInvalidInput(event);

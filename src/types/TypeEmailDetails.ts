@@ -4,7 +4,7 @@ interface TypeEmailDetails {
   bcc?: string;
   from: string;
   subject?: string;
-  text?: string;
+  text: string;
 }
 
 export default TypeEmailDetails;

@@ -23,6 +23,7 @@ function checkInvalidInput(event: APIGatewayProxyEvent): string {
   const requiredErrorText = 'field is required on the json body object';
   if (!emailDetails.to) return `"to" ${requiredErrorText}`;
   if (!emailDetails.from) return `"from" ${requiredErrorText}`;
+  if (!emailDetails.text) return `"text" ${requiredErrorText}`;
 
   const invalidEmailsErrorText =
     'field is invalid format, please use the email address (optionally prefixed with name), separated by commas, like so... "Jim Jones<jim@jones.com>,john@smith.com"';

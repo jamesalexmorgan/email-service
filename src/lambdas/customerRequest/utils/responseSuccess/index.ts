@@ -4,7 +4,7 @@ import { APIGatewayProxyResult } from 'aws-lambda';
 function responseSuccess(requestId: string): APIGatewayProxyResult {
   return {
     statusCode: EnumStatusCode.success,
-    body: JSON.stringify({ success: true, requestId }),
+    body: JSON.stringify({ success: true, requestId, message: 'Queued' }),
     headers: { 'Content-Type': EnumContentType.json },
   };
 }

@@ -18,7 +18,8 @@ describe('customerRequest', () => {
     const event = newTestEvent(goodEventBody);
     const result = await customerRequest.handler(event);
     expect(result).toEqual({
-      body: '{"success":true,"requestId":"IAmTheMockMessageId"}',
+      body:
+        '{"success":true,"requestId":"IAmTheMockMessageId","message":"Queued"}',
       headers: { 'Content-Type': 'application/json' },
       statusCode: 200,
     });

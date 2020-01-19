@@ -9,12 +9,13 @@ provider:
     SQS_QUEUE_URL: https://sqs.${self:provider.region}.amazonaws.com/067644463950/EmailQueue
     API_URL_MAILGUN: ${env:API_URL_MAILGUN}
     API_KEY_MAILGUN: ${env:API_KEY_MAILGUN}
+    API_URL_SENDGRID: ${env:API_URL_SENDGRID}
     API_KEY_SENDGRID: ${env:API_KEY_SENDGRID}
   iamRoleStatements:
     # allow sending to EmailQueue
-    - Effect: 'Allow'
+    - Effect: "Allow"
       Action:
-        - 'sqs:SendMessage'
+        - "sqs:SendMessage"
       Resource:
         Fn::GetAtt:
           - EmailQueue
@@ -35,12 +36,14 @@ package:
 functions:
   customerRequest:
     handler: dist/lambdas/customerRequest.handler
+    timeout: 5
     events:
       - http:
           path: v1/send-email
           method: any
   sendEmail:
     handler: dist/lambdas/sendEmail.handler
+    timeout: 15 # this timeout a bit longer, just to wait for worst case api call timeouts (10s)
     events:
       - sqs:
           arn:
@@ -52,9 +55,9 @@ functions:
 resources:
   Resources:
     EmailQueue:
-      Type: 'AWS::SQS::Queue'
+      Type: "AWS::SQS::Queue"
       Properties:
-        QueueName: 'EmailQueue'
+        QueueName: "EmailQueue"
         VisibilityTimeout: 30 # 30 sec.
         MessageRetentionPeriod: 300 # 300 sec. 10 times until fail
 

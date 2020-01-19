@@ -30,6 +30,7 @@ async function sendEmailSendGrid(email: TypeEmailDetails): Promise<boolean> {
         subject,
         content: [{ type: 'text/plain', value: text }],
       }),
+      timeout: 5000,
     };
 
     console.log(

@@ -12,10 +12,9 @@ describe('customerRequest', () => {
         url:
           'https://1apdfrxcte.execute-api.ap-southeast-2.amazonaws.com/dev/v1/send-email',
         data: JSON.stringify({
-          to: 'John Smith<jamesalexmorgan+totest@gmail.com>',
+          to: 'John Smith<jamesalexmorgan@gmail.com>',
           cc: 'jamesalexmorgan+cctest@gmail.com',
-          bcc:
-            'Mike Tyson<jamesalexmorgan+bcc1test@gmail.com>,jamesalexmorgan+bcc2test@gmail.com',
+          bcc: 'Mike Tyson<jamesalexandermorgan@yahoo.com>',
           from: 'Jim Jones<jim@jones.com>',
           subject: 'Something awesome has happened',
           text: 'You sent an email',
@@ -29,6 +28,7 @@ describe('customerRequest', () => {
 
     expect(axiosResult.data).toEqual({
       success: true,
+      message: 'Queued',
       requestId: expect.anything(),
     });
     // TODO here, use gmail api to log into test email account and check emails were received

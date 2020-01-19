@@ -22,6 +22,7 @@ async function sendEmailMailGun(email: TypeEmailDetails): Promise<boolean> {
       url: API_URL_MAILGUN,
       auth: { username: API_USERNAME_MAILGUN, password: API_KEY_MAILGUN },
       params: { to, cc, bcc, from, subject, text },
+      timeout: 5000,
     };
     console.log(
       'INFO in src/lambdas/sendEmail/sendEmailMailGun: REQUEST CONFIG',

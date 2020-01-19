@@ -37,11 +37,13 @@ describe('sendEmail (invoked by SQS)', () => {
 
     expect(axios).toHaveBeenCalledTimes(1);
     expect(axios).toHaveBeenCalledWith({
+      method: 'POST',
+      url:
+        'https://api.mailgun.net/v3/PlaceHolderTestApiUrlMailGun.mailgun.org/messages', // from .env-test file
       auth: {
         password: 'PlaceHolderTestApiKeyMailGunASDFGHJKL', // from .env-test file
         username: 'api',
       },
-      method: 'POST',
       params: {
         bcc: 'John Smith<john@smith.com>,john@smith.com',
         cc: 'john@smith.com',
@@ -50,8 +52,7 @@ describe('sendEmail (invoked by SQS)', () => {
         text: 'You sent an email',
         to: 'John Smith<john@smith.com>',
       },
-      url:
-        'https://api.mailgun.net/v3/PlaceHolderTestApiUrlMailGun.mailgun.org/messages', // from .env-test file
+      timeout: 5000,
     });
   });
 
@@ -85,6 +86,7 @@ describe('sendEmail (invoked by SQS)', () => {
         '"email":"jim@jones.com"},' +
         '"subject":"Something awesome has happened",' +
         '"content":[{"type":"text/plain","value":"You sent an email"}]}',
+      timeout: 5000,
     });
   });
 

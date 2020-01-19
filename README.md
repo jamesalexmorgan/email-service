@@ -12,19 +12,22 @@ You can test the api point now by pasting this command below (replace your email
 
     curl --header "Content-Type: application/json" \
       --request POST \
-      --data '{"to":"youremailaddress@here.com","subject":"hello world","text":"details about hello world"}' \
+      --data '{"to":"youremailaddress@here.com","from":"John Smith<john@smith.com>","subject":"hello world","text":"details about hello world"}' \
       https://1apdfrxcte.execute-api.ap-southeast-2.amazonaws.com/dev/v1/send-email
 
 
 As you can see the url currently recieves POST requests with the Content-Type "application/json", with the following possible attributes sent in the JSON body...
 
     {
-      "to": "youremailaddress@here.com,yourotheremailaddress@here.com", // a comma separated 
-      "cc": "theiremailaddress@here.com,theirotheremailaddress@here.com", // a comma separated 
-      "bcc": "anotheremailaddress@here.com,yetanotheremailaddress@here.com", // a comma separated 
-      "subject": "Our latest offer!", // (The subject of the email)
-      "text": "Details about our offer...", // (The text body of the email)
+      "to": "Jim Jones<youremailaddress@here.com>,yourotheremailaddress@here.com", // required, email addresses comma separated
+      "cc": "theiremailaddress@here.com,theirotheremailaddress@here.com", // email addresses comma separated
+      "bcc": "anotheremailaddress@here.com,yetanotheremailaddress@here.com", // email addresses comma separated
+      "from": "John Smith<john@smith.com>", // required, a single email address
+      "subject": "Our latest offer!", // The subject of the email
+      "text": "Details about our offer...", // required, the text body of the email
     }
+
+NOTE: an "email address" can be in the format either "Jim Jones<jim@jones.com>" or "jim@jones.com"
 
 ## Under the hood
 
@@ -33,10 +36,10 @@ Behind the scenes it has the behaviour...
   - validates the input and returns good/bad response
   - If valid, add a message containing this, to an SQS queue 'sendQueue'
 - sendQueue will invoke 'sendEmail' lambda, which will
-  - Attempt to send the email via Mailgun api
-  - If Mailgun fails, then attempt to send the email via SendGrid api
+  - Attempt to send the email via Mailgun api (capped 5 second wait)
+  - If Mailgun fails, then attempt to send the email via SendGrid api (capped 5 second wait)
   - If both failed, then return to SQS a failure
-- If failed, then try again every 30 seconds
+- If failed, then try again every 30 seconds for 10 minutes
 
 
 ## Setup the environment
@@ -115,11 +118,15 @@ If you've already done a whole stack deploy, and you just want to do a quick dep
 
 ## TODO
 
-Some things, which we didn't get round to yet...
+Some things we couldn't quite get working in this demo...
+
+- The scenario when both apis fail, the SQS queue should retry the lambda every 30 seconds but we couldn't get that working yet.
+
+Some things, for the future...
 
 - Support html field
 - An integration test that check the email arrived - logs into gmail and checks if the email was received 🤔 At the mercy of Mailgun/SendGrid's delivery time (how long would you wait?)
-- Guarenteed delivery - DynamoDB to record request, meanwhile lambda retries if failure
+- Guarenteed delivery - DynamoDB to record requests
 - /email-status endpoint, where (providing a GUID) customers can check on the status of a particular email... while still in SQS queue 'pending', after giving up (after 50 times) 'failed'
 - deploy additional dev/test environments with CI pipeline
 - Create signup endpoint/page, account, subscription, service and monitor usage, allowing so many calls per month
