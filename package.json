@@ -33,7 +33,7 @@
     "@types/aws-lambda": "^8.10.39",
     "aws-sdk": "^2.606.0",
     "axios": "^0.19.1",
-    "serverless": "^1.61.2"
+    "serverless": "^3.25.1"
   },
   "devDependencies": {
     "@babel/types": "^7.5.5",
